@@ -1,0 +1,8 @@
+# venv folder
+venv
+
+.vscode
+
+*.pyc
+instance/
+
