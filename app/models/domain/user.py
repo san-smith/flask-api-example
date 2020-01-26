@@ -19,12 +19,6 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     @login.user_loader
-    def load_user(id):
+    def load_user(self, id):
         return User.query.get(int(id))
 
-    def serialize(self):
-        return {
-            'id': self.id,
-            'username': self.username,
-            'email': self.email,
-        }

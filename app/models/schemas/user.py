@@ -9,5 +9,6 @@ UserLoginBody = app_api.model('UserLoginBody', {
 UserData = app_api.model('UserData', {
     'id': fields.Integer(required=True, description='User id'),
     'email': fields.String(required=True, description='User email'),
-    'username': fields.String(required=True, description='User name')
+    'username': fields.String(required=True, description='User name'),
+    'token': fields.String(required=True, description='User token'),
 })

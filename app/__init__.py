@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_restplus import Api
-from werkzeug.contrib.fixers import ProxyFix
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 app: Flask = Flask(__name__, instance_relative_config=True)
 app.wsgi_app = ProxyFix(app.wsgi_app)
@@ -30,5 +30,5 @@ app_api = Api(
     doc='/docs/',
 )
 
-from app.models.domains import user
+from app.models.domain import user
 from app.api import routes
