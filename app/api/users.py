@@ -1,8 +1,7 @@
-from app import app_api, db, app
+from app import app_api, app
 from flask_restplus import Resource
-from flask import jsonify, json, abort
+from flask import abort
 from app.models.domain.user import User
-from flask_login import current_user, login_user
 from app.models.schemas.user import UserData, UserLoginBody
 from app.utils import jwt
 from typing import Dict, Any

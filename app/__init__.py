@@ -30,5 +30,5 @@ app_api = Api(
     doc='/docs/',
 )
 
-from app.models.domain import user
-from app.api import routes
+from app.models.domain import user  # noqa: E402, F401
+from app.api import users  # noqa: E402, F401
