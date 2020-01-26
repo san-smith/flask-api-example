@@ -30,5 +30,5 @@ app_api = Api(
     doc='/docs/',
 )
 
-from app.models import user
+from app.models.domains import user
 from app.api import routes
