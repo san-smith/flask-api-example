@@ -18,6 +18,9 @@ class User(UserMixin, db.Model):
     def check_password(self, password) -> bool:
         return check_password_hash(self.password_hash, password)
 
+    def get_user_by_email(email: str):
+        return User.query.filter_by(email=email).first()
+
     @login.user_loader
     def load_user(self, id):
         return User.query.get(int(id))

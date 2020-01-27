@@ -31,4 +31,4 @@ app_api = Api(
 )
 
 from app.models.domain import user  # noqa: E402, F401
-from app.api import users  # noqa: E402, F401
+from app.api import users, auth  # noqa: E402, F401

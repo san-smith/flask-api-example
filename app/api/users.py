@@ -1,23 +1,11 @@
-from app import app_api, app
+from app import app_api
 from flask_restplus import Resource
 from flask import abort
 from app.models.domain.user import User
-from app.models.schemas.user import UserData, UserLoginBody
-from app.utils import jwt
-from typing import Dict, Any
+from app.models.schemas.user import UserData
+from app.utils.users import get_user_data
 
-ns = app_api.namespace('User', path=f'/api/users')
-
-
-def get_user_data(user: User) -> Dict[str, Any]:
-    token = jwt.create_access_token_for_user(
-        user, app.config['SECRET_KEY'])
-    return {
-        'id': user.id,
-        'username': user.username,
-        'email': user.email,
-        'token': token,
-    }
+ns = app_api.namespace('User', path='/api/users')
 
 
 @ns.route('/')
@@ -43,13 +31,3 @@ class GetUser(Resource):
             return abort(404)
 
         return get_user_data(user)
-
-
-@ns.route('/login')
-class LoginUser(Resource):
-
-    @ns.expect(UserLoginBody)
-    @ns.marshal_with(UserData, code=201)
-    def post(self):
-        '''Авторизация '''
-        print(app_api.payload)
