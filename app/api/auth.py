@@ -1,9 +1,12 @@
-from app import app_api
+from app import app_api, db
 from flask_restplus import Resource
 from app.models.domain.user import User
-from app.models.schemas.user import UserData, UserLoginBody
+from app.models.schemas.user import UserData, UserLoginBody, UserSignupBody
 from app.models.schemas.errors import BaseError
 from app.utils.users import get_user_data
+from email_validator import validate_email, EmailNotValidError
+from app.utils.auth import check_email_is_taken, check_username_is_taken
+
 
 ns = app_api.namespace('Auth', path='/api/auth')
 
@@ -22,3 +25,40 @@ class LoginUser(Resource):
             ns.abort(400, status='Wrong password', statusCode='400')
 
         return get_user_data(user)
+
+
+@ns.route('/signup')
+class SignupUser(Resource):
+    @ns.expect(UserSignupBody)
+    @ns.response(400, 'Bad request', BaseError)
+    @ns.marshal_with(UserData, code=201)
+    def post(self):
+        '''Регистрация '''
+        try:
+            email = app_api.payload['email']
+            password = app_api.payload['email']
+            username = app_api.payload['username']
+            validate_email(email)  # validate and get info
+
+        except EmailNotValidError:
+            ns.abort(400, status='Email is not valid', statusCode='400')
+        except KeyError as e:
+            ns.abort(
+                422,
+                status=f'Key "{str(e.args[0])}" is ubsent',
+                statusCode='422',
+            )
+
+        if check_email_is_taken(email):
+            ns.abort(400, status='Email has been taken', statusCode='400')
+
+        if check_username_is_taken(username):
+            ns.abort(400, status='Username has been taken', statusCode='400')
+
+        user = User(username=username, email=email)
+        user.set_password(password)
+
+        db.session.add(user)
+        db.session.commit()
+
+        return get_user_data(user), 201
