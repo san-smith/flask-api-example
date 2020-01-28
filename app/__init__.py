@@ -12,7 +12,7 @@ app.wsgi_app = ProxyFix(app.wsgi_app)
 app.config.from_object('config.default')
 
 # Load the configuration from the instance folder
-app.config.from_pyfile('config.py')
+app.config.from_pyfile('config.py', silent=True)
 
 # Load the file specified by the APP_CONFIG_FILE environment variable
 # Variables defined here will override those in the default configuration
