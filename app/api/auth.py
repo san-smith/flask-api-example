@@ -5,7 +5,7 @@ from app.models.schemas.user import UserData, UserLoginBody, UserSignupBody
 from app.models.schemas.errors import BaseError
 from app.utils.users import get_user_data
 from email_validator import validate_email, EmailNotValidError
-from app.utils.auth import check_email_is_taken, check_username_is_taken
+from app.utils.auth import check_email_is_taken
 
 
 ns = app_api.namespace('Auth', path='/api/auth')
@@ -36,8 +36,9 @@ class SignupUser(Resource):
         '''Регистрация '''
         try:
             email = app_api.payload['email']
-            password = app_api.payload['email']
-            username = app_api.payload['username']
+            password = app_api.payload['password']
+            first_name = app_api.payload['first_name']
+            last_name = app_api.payload['last_name']
             validate_email(email)  # validate and get info
 
         except EmailNotValidError:
@@ -52,10 +53,7 @@ class SignupUser(Resource):
         if check_email_is_taken(email):
             ns.abort(400, status='Email has been taken', statusCode='400')
 
-        if check_username_is_taken(username):
-            ns.abort(400, status='Username has been taken', statusCode='400')
-
-        user = User(username=username, email=email)
+        user = User(first_name=first_name, last_name=last_name, email=email)
         user.set_password(password)
 
         db.session.add(user)

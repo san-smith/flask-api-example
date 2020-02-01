@@ -16,7 +16,7 @@ app.config.from_pyfile('config.py', silent=True)
 
 # Load the file specified by the APP_CONFIG_FILE environment variable
 # Variables defined here will override those in the default configuration
-# app.config.from_envvar('APP_CONFIG_FILE')
+app.config.from_envvar('APP_CONFIG_FILE', silent=True)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)

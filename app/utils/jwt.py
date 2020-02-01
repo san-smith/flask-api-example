@@ -22,15 +22,15 @@ def create_jwt_token(
 
 def create_access_token_for_user(user: User, secret_key: str) -> str:
     return create_jwt_token(
-        jwt_content={'username': user.username},
+        jwt_content={'email': user.email},
         secret_key=secret_key,
         expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
     )
 
 
-def get_username_from_token(token: str, secret_key: str) -> str:
+def get_email_from_token(token: str, secret_key: str) -> str:
     try:
-        return decode(token, secret_key, algorithms=[ALGORITHM])['username']
+        return decode(token, secret_key, algorithms=[ALGORITHM])['email']
     except PyJWTError as decode_error:
         raise ValueError("unable to decode JWT token") from decode_error
     # except ValidationError as validation_error:

@@ -9,7 +9,8 @@ UserLoginBody = app_api.model('UserLoginBody', {
 UserData = app_api.model('UserData', {
     'id': fields.Integer(required=True, description='User id'),
     'email': fields.String(required=True, description='User email'),
-    'username': fields.String(required=True, description='User name'),
+    'first_name': fields.String(required=True, description='User first name'),
+    'last_name': fields.String(required=True, description='User last name'),
     'token': fields.String(required=True, description='User token'),
 })
 
@@ -17,5 +18,4 @@ UserData = app_api.model('UserData', {
 UserSignupBody = app_api.model('UserSignupBody', {
     'email': fields.String(required=True, description='User email'),
     'password': fields.String(required=True, description='User password'),
-    'username': fields.String(required=True, description='User name'),
 })

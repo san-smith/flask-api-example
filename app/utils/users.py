@@ -9,7 +9,8 @@ def get_user_data(user: User) -> Dict[str, Any]:
         user, app.config['SECRET_KEY'])
     return {
         'id': user.id,
-        'username': user.username,
+        'first_name': user.first_name,
+        'last_name': user.last_name,
         'email': user.email,
         'token': token,
     }
