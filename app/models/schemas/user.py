@@ -18,4 +18,12 @@ UserData = app_api.model('UserData', {
 UserSignupBody = app_api.model('UserSignupBody', {
     'email': fields.String(required=True, description='User email'),
     'password': fields.String(required=True, description='User password'),
+    'first_name': fields.String(
+        required=False,
+        description='User first name, default ""',
+    ),
+    'last_name': fields.String(
+        required=False,
+        description='User last name, default ""',
+    ),
 })

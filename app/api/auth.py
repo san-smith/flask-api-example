@@ -37,8 +37,8 @@ class SignupUser(Resource):
         try:
             email = app_api.payload['email']
             password = app_api.payload['password']
-            first_name = app_api.payload['first_name']
-            last_name = app_api.payload['last_name']
+            first_name = app_api.payload.get('first_name', '')
+            last_name = app_api.payload.get('last_name', '')
             validate_email(email)  # validate and get info
 
         except EmailNotValidError:
