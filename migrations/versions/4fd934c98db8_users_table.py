@@ -1,7 +1,7 @@
 """users table
 
 Revision ID: 4fd934c98db8
-Revises: 
+Revises:
 Create Date: 2020-01-25 21:11:04.659333
 
 """
