@@ -4,8 +4,10 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_restplus import Api
 from werkzeug.middleware.proxy_fix import ProxyFix
+from flask_cors import CORS
 
 app: Flask = Flask(__name__, instance_relative_config=True)
+CORS(app)
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
 # Load the default configuration
