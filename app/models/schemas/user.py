@@ -11,7 +11,6 @@ UserData = app_api.model('UserData', {
     'email': fields.String(required=True, description='User email'),
     'first_name': fields.String(required=True, description='User first name'),
     'last_name': fields.String(required=True, description='User last name'),
-    'token': fields.String(required=True, description='User token'),
 })
 
 
@@ -26,4 +25,8 @@ UserSignupBody = app_api.model('UserSignupBody', {
         required=False,
         description='User last name, default ""',
     ),
+})
+
+UserToken = app_api.model('UserToken', {
+    'token': fields.String(description='User token'),
 })
