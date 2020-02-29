@@ -6,6 +6,7 @@ from app.models.schemas.errors import BaseError
 from email_validator import validate_email, EmailNotValidError
 from app.utils.auth import check_email_is_taken
 from app.utils import jwt
+from flask_restplus import reqparse
 
 
 ns = app_api.namespace('Auth', path='/api/auth')
@@ -72,3 +73,33 @@ class SignupUser(Resource):
         db.session.commit()
 
         return {'token': token}, 201
+
+
+@ns.route('/logut')
+@ns.doc(params={'Auth': {
+    'in': 'header', 'description': 'An authorization token',
+}})
+class LogoutUser(Resource):
+    def post(self):
+        '''Сброс токена авторизации'''
+        parser = reqparse.RequestParser()
+        parser.add_argument(
+            'Auth',
+            location='headers',
+            required=True,
+            type=str,
+        )
+        args = parser.parse_args()
+        token = args['Auth']
+        user: User = User.get_user_by_token(token=token)
+        if user is None:
+            ns.abort(401, status='Unauthorised', statusCode='401')
+
+        token = jwt.create_access_token_for_user(
+            user,
+            app.config['SECRET_KEY'],
+        )
+        user.set_token(token)
+        db.session.commit()
+
+        return 200

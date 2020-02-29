@@ -27,6 +27,9 @@ class User(UserMixin, db.Model):
     def get_user_by_email(email: str):
         return User.query.filter_by(email=email).first()
 
+    def get_user_by_token(token: str):
+        return User.query.filter_by(token=token).first()
+
     def set_token(self, token):
         self.token = token
 
