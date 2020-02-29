@@ -77,7 +77,9 @@ class SignupUser(Resource):
 
 @ns.route('/logut')
 @ns.doc(params={'Auth': {
-    'in': 'header', 'description': 'An authorization token',
+    'in': 'header',
+    'description': 'An authorization token',
+    'required': True,
 }})
 class LogoutUser(Resource):
     def post(self):
