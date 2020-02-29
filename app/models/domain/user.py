@@ -9,6 +9,7 @@ class User(UserMixin, db.Model):
     last_name = db.Column(db.String(64))
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    token = db.Column(db.String(180))
 
     def __repr__(self) -> str:
         return '<User {} {} {}>'.format(
@@ -25,6 +26,9 @@ class User(UserMixin, db.Model):
 
     def get_user_by_email(email: str):
         return User.query.filter_by(email=email).first()
+
+    def set_token(self, token):
+        self.token = token
 
     @login.user_loader
     def load_user(self, id):

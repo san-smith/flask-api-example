@@ -18,16 +18,21 @@ class LoginUser(Resource):
     @ns.marshal_with(UserToken, code=200)
     def post(self):
         '''Авторизация '''
-        user = User.get_user_by_email(email=app_api.payload['email'])
+        user: User = User.get_user_by_email(email=app_api.payload['email'])
         if user is None:
             ns.abort(400, status='User not found', statusCode='400')
         if not user.check_password(app_api.payload['password']):
             ns.abort(400, status='Wrong password', statusCode='400')
 
-        token = jwt.create_access_token_for_user(
-            user, app.config['SECRET_KEY'])
+        if jwt.token_is_expired(user.token, app.config['SECRET_KEY']):
+            token = jwt.create_access_token_for_user(
+                user,
+                app.config['SECRET_KEY'],
+            )
+            user.set_token(token)
+            db.session.commit()
 
-        return {'token': token}
+        return {'token': user.token}
 
 
 @ns.route('/signup')
@@ -61,6 +66,7 @@ class SignupUser(Resource):
 
         token = jwt.create_access_token_for_user(
             user, app.config['SECRET_KEY'])
+        user.set_token(token)
 
         db.session.add(user)
         db.session.commit()

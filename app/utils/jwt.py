@@ -35,3 +35,16 @@ def get_email_from_token(token: str, secret_key: str) -> str:
         raise ValueError("unable to decode JWT token") from decode_error
     # except ValidationError as validation_error:
     #     raise ValueError("malformed payload in token") from validation_error
+
+
+def token_is_expired(token: str, secret_key: str) -> bool:
+    try:
+        return decode(
+            token,
+            secret_key,
+            algorithms=[ALGORITHM]
+        )['exp'] < datetime.utcnow().timestamp()
+    except PyJWTError:
+        # raise ValueError("unable to decode JWT token") from decode_error
+        print('unable to decode JWT token')
+        return True
